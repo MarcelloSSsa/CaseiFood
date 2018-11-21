@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import caseifood.app.com.presenter.FoodSuggestionPresenter;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView temperatura;
@@ -16,11 +18,15 @@ public class MainActivity extends AppCompatActivity {
     private EditText textoBusca;
 
     private Button buscar;
+    private FoodSuggestionPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        presenter = new FoodSuggestionPresenter();
+        presenter.attachView(listener);
 
         temperatura = findViewById(R.id.idTemperatura);
         descTemp = findViewById(R.id.idDescTemperatura);
@@ -40,5 +46,32 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.attachView(listener);
+    }
+
+    @Override
+    protected void onStop() {
+        presenter.detachView();
+        super.onStop();
+    }
+
+    FoodSuggestionPresenter.Callback listener = new FoodSuggestionPresenter.Callback() {
+
+        @Override
+        public void onFoodSuggestionSuccess(String foodName, String temperature, int weatherDescriptionCode) {
+
+        }
+
+        @Override
+        public void onFoodSuggestionRequestError() {
+
+        }
+
+
+    };
 
 }
