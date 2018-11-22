@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     FoodSuggestionPresenter.Callback listener = new FoodSuggestionPresenter.Callback() {
 
         @Override
-        public void onFoodSuggestionSuccess(String foodName, String temperature, int weatherDescriptionCode) {
+        public void onFoodSuggestionSuccess(String foodName, String temperature, String weatherDescriptionCode) {
 
         }
 
