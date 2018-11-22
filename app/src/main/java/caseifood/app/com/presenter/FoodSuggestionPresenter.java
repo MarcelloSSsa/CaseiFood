@@ -1,5 +1,7 @@
 package caseifood.app.com.presenter;
 
+import android.util.Log;
+
 import java.util.List;
 
 import caseifood.app.com.caseifood.api.ApiModule;
@@ -47,29 +49,38 @@ public class FoodSuggestionPresenter {
     }
 
     private void processResult(Response<WeatherResult> response) {
-        WeatherResult weatherResult = response.body();
-        Double temperature = weatherResult.getWeatherValues().getTemperature();
-        if (temperature == null) {
-            temperature = 0.0D;
-        }
+        String foodSuggestion = "???";
+        Double temperature = 0.0D;
+        String weatherDescription = "???";
 
-        String weatherDescription = "";
-        List<Weather> weathers = weatherResult.getWeatherDescription();
-        if (weathers != null && !weathers.isEmpty()) {
-            weatherDescription = weatherResult.getWeatherDescription().get(0).getDescription();
-        }
+        try {
+            WeatherResult weatherResult = response.body();
+            temperature = weatherResult.getWeatherValues().getTemperature();
+            if (temperature == null) {
+                temperature = 0.0D;
+            }
 
-        String foodSuggestion;
-        if (temperature > 30) {
-            foodSuggestion = "Sorvete";
-        } else if (temperature < 15) {
-            foodSuggestion = "Pizza";
-        } else {
-            foodSuggestion = "Café";
+            weatherDescription = "";
+            List<Weather> weathers = weatherResult.getWeatherDescription();
+            if (weathers != null && !weathers.isEmpty()) {
+                weatherDescription = weatherResult.getWeatherDescription().get(0).getDescription();
+            }
+
+            if (temperature > 30) {
+                foodSuggestion = "Sorvete";
+            } else if (temperature < 15) {
+                foodSuggestion = "Pizza";
+            } else {
+                foodSuggestion = "Café";
+            }
+        } catch (Exception e){
+            Log.e("ooops", "wrong...", e);
         }
 
         if (listener == null) { return; }
-        listener.onFoodSuggestionSuccess(foodSuggestion, String.valueOf(temperature), weatherDescription != null ? weatherDescription : "???");
+
+        listener.onFoodSuggestionSuccess(foodSuggestion, String.valueOf(temperature),
+                weatherDescription != null && !weatherDescription.isEmpty() ? weatherDescription : "???");
     }
 
     public interface Callback {
