@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import caseifood.app.com.presenter.FoodSuggestionPresenter;
 
@@ -34,9 +35,7 @@ public class MainActivity extends AppCompatActivity {
         buscar = findViewById(R.id.idButao);
         textoBusca = findViewById(R.id.idTextoBusca);
 
-        temperatura.setText("Temperatura: ");
-        descTemp.setText("No momento está: ");
-        sugestaoComida.setText("Uma boa pedida para agora seria: ");
+
 
         buscar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         presenter.attachView(listener);
+
     }
 
     @Override
@@ -69,14 +69,15 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onFoodSuggestionSuccess(String foodName, String temperature, String weatherDescriptionCode) {
-
+            temperatura.setText("Temperatura: " + temperature);
+            descTemp.setText("No momento está: " + weatherDescriptionCode);
+            sugestaoComida.setText("Uma boa pedida para agora seria: " + foodName);
         }
 
         @Override
         public void onFoodSuggestionRequestError() {
-
+            Toast.makeText(getApplicationContext(), "Erro ao sugerir", Toast.LENGTH_SHORT).show();
         }
-
 
     };
 

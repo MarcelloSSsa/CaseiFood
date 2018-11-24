@@ -75,6 +75,10 @@ public class FoodSuggestionPresenter {
             }
         } catch (Exception e){
             Log.e("ooops", "wrong...", e);
+
+            if (listener == null) {return;}
+
+            listener.onFoodSuggestionRequestError();
         }
 
         if (listener == null) { return; }

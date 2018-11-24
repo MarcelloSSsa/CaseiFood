@@ -11,7 +11,7 @@ import com.google.gson.GsonBuilder
 
 object ApiModule {
 
-    val BASE_URL = "http://history.openweathermap.org/"
+    val BASE_URL = "http://api.openweathermap.org/"
     val restAdapter: Retrofit
 
     init {
